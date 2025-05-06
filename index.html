@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motos BSB - Clube de Motociclistas de Brasília</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&display=swap');
+        
+        :root {
+            --primary: #e63946;
+            --secondary: #1d3557;
+            --light: #f1faee;
+            --accent: #a8dadc;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .logo-font {
+            font-family: 'Bebas Neue', cursive;
+        }
+        
+        .hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1517846693594-1567da72af75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            min-height: 80vh;
+        }
+        
+        .instagram-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .instagram-post {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .instagram-post:hover {
+            transform: translateY(-5px);
+        }
+        
+        .instagram-post img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .instagram-likes {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .bike-card {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .bike-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .event-card {
+            border-left: 5px solid var(--primary);
+        }
+        
+        .google-btn {
+            background: #4285F4;
+            color: white;
+            border-radius: 4px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .google-btn:hover {
+            background: #357ae8;
+        }
+        
+        .google-icon {
+            background: white;
+            padding: 8px;
+            border-radius: 2px;
+            margin-right: 10px;
+        }
+        
+        .member-card {
+            transition: all 0.3s ease;
+        }
+        
+        .member-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .photo-upload {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .photo-upload:hover {
+            border-color: var(--primary);
+            background-color: rgba(230, 57, 70, 0.05);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 60vh;
+            }
+            
+            h1 {
+                font-size: 3rem !important;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .flex-col-mobile {
+                flex-direction: column;
+            }
+            
+            .w-full-mobile {
+                width: 100% !important;
+            }
+            
+            .text-center-mobile {
+                text-align: center;
+            }
+            
+            .grid-cols-1-mobile {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .p-4-mobile {
+                padding: 1rem !important;
+            }
+            
+            .text-xl-mobile {
+                font-size: 1.25rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                min-height: 50vh;
+            }
+            
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .instagram-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .instagram-post img {
+                height: 200px;
+            }
+            
+            .member-card img {
+                width: 12vw !important;
+                height: 12vw !important;
+            }
+            
+            .member-card p {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://i.ibb.co/233xJ4wc/image.png" alt="Logo Motos BSB" class="h-12 mr-3">
+                <h1 class="text-2xl font-bold text-gray-800 logo-font">MOTOS <span class="text-red-600">BSB</span></h1>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-gray-700 hover:text-red-600 font-medium">Início</a>
+                <a href="#about" class="nav-link text-gray-700 hover:text-red-600 font-medium">Sobre</a>
+                <a href="#events" class="nav-link text-gray-700 hover:text-red-600 font-medium">Eventos</a>
+                <a href="#gallery" class="nav-link text-gray-700 hover:text-red-600 font-medium">Galeria</a>
+                <a href="#market" class="nav-link text-gray-700 hover:text-red-600 font-medium">Motos à Venda</a>
+                <a href="#join" class="nav-link text-gray-700 hover:text-red-600 font-medium">Junte-se a Nós</a>
+            </nav>
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-gray-700 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 px-4 shadow-lg">
+            <a href="#home" class="block py-2 text-gray-700 hover:text-red-600">Início</a>
+            <a href="#about" class="block py-2 text-gray-700 hover:text-red-600">Sobre</a>
+            <a href="#events" class="block py-2 text-gray-700 hover:text-red-600">Eventos</a>
+            <a href="#gallery" class="block py-2 text-gray-700 hover:text-red-600">Galeria</a>
+            <a href="#market" class="block py-2 text-gray-700 hover:text-red-600">Motos à Venda</a>
+            <a href="#join" class="block py-2 text-gray-700 hover:text-red-600">Junte-se a Nós</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero flex items-center justify-center text-center text-white">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 logo-font">MOTOS <span class="text-red-500">BSB</span></h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">O maior clube de motociclistas de Brasília. Liberdade, aventura e irmandade sobre duas rodas.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#join" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Junte-se a Nós</a>
+                <a href="#events" class="bg-transparent hover:bg-white hover:text-gray-900 text-white font-bold py-3 px-6 border-2 border-white rounded-lg transition duration-300">Próximos Eventos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">SOBRE O <span class="text-red-600">CLUBE</span></h2>
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Grupo de motoqueiros" class="rounded-lg shadow-xl w-full">
+                </div>
+                <div class="md:w-1/2">
+                    <p class="text-gray-700 mb-4 text-lg">Fundado em 2010, o Motos BSB é mais que um clube de motociclistas - é uma família sobre duas rodas. Nosso objetivo é unir apaixonados por motociclismo em Brasília e região, promovendo encontros, passeios e eventos que fortalecem nossa comunidade.</p>
+                    <p class="text-gray-700 mb-6 text-lg">Com mais de 500 membros ativos, organizamos eventos mensais, viagens em grupo, ações sociais e muito mais. Não importa se você tem uma custom, esportiva ou trail - aqui o que vale é o amor pela estrada.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="font-bold text-red-600 mb-2">Missão</h3>
+                            <p class="text-gray-700">Unir motociclistas através da paixão pelas duas rodas e promover a cultura motociclística com segurança e respeito.</p>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="font-bold text-red-600 mb-2">Valores</h3>
+                            <p class="text-gray-700">Irmandade, liberdade, respeito às leis de trânsito e amor pelas motos e pela estrada.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">PRÓXIMOS <span class="text-red-600">EVENTOS</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Event 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md event-card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-600 text-white rounded-lg p-2 text-center mr-4">
+                            <div class="text-xl font-bold">25</div>
+                            <div class="text-xs">JUN</div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Passeio Chapada dos Veadeiros</h3>
+                            <p class="text-gray-600">Saída: 7h - Posto BR 010</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">Passeio de um dia para a Chapada dos Veadeiros com paradas estratégicas e almoço incluso. Trajeto de aproximadamente 300km ida e volta.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">50 VAGAS</span>
+                        <button class="text-red-600 font-medium hover:text-red-800">Mais detalhes</button>
+                    </div>
+                </div>
+                
+                <!-- Event 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md event-card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-600 text-white rounded-lg p-2 text-center mr-4">
+                            <div class="text-xl font-bold">15</div>
+                            <div class="text-xs">JUL</div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Encontro Anual Motos BSB</h3>
+                            <p class="text-gray-600">9h-18h - Parque da Cidade</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">Nosso maior evento do ano! Shows, competições, exposição de motos, praça de alimentação e muito mais. Entrada gratuita para membros.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">OPEN</span>
+                        <button class="text-red-600 font-medium hover:text-red-800">Mais detalhes</button>
+                    </div>
+                </div>
+                
+                <!-- Event 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md event-card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-600 text-white rounded-lg p-2 text-center mr-4">
+                            <div class="text-xl font-bold">05</div>
+                            <div class="text-xs">AGO</div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Workshop Manutenção Básica</h3>
+                            <p class="text-gray-600">14h-17h - Sede do Clube</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">Aprenda os fundamentos da manutenção preventiva de motos com nosso mecânico especializado. Vagas limitadas.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">20 VAGAS</span>
+                        <button class="text-red-600 font-medium hover:text-red-800">Mais detalhes</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="#" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Ver Todos os Eventos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">GALERIA DE <span class="text-red-600">FOTOS</span></h2>
+            
+            <!-- Instagram Feed -->
+            <h3 class="text-xl font-semibold mb-6 flex items-center justify-center md:justify-start">
+                <i class="fab fa-instagram text-2xl mr-2 text-pink-600"></i> @motos_bsb
+            </h3>
+            
+            <div class="instagram-gallery mb-12">
+                <!-- These would be dynamically loaded from Instagram API in a real implementation -->
+                <div class="instagram-post">
+                    <img src="https://images.unsplash.com/photo-1568772585407-936be5ef86c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Motos BSB">
+                    <div class="instagram-likes">
+                        <i class="fas fa-heart mr-2"></i> 1,245
+                    </div>
+                </div>
+                <div class="instagram-post">
+                    <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Motos BSB">
+                    <div class="instagram-likes">
+                        <i class="fas fa-heart mr-2"></i> 892
+                    </div>
+                </div>
+                <div class="instagram-post">
+                    <img src="https://images.unsplash.com/photo-1580310614657-6baf49c6daf6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Motos BSB">
+                    <div class="instagram-likes">
+                        <i class="fas fa-heart mr-2"></i> 1,567
+                    </div>
+                </div>
+                <div class="instagram-post">
+                    <img src="https://images.unsplash.com/photo-1601758003122-53c40e686a19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Motos BSB">
+                    <div class="instagram-likes">
+                        <i class="fas fa-heart mr-2"></i> 2,103
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Member Photos Section -->
+            <div class="bg-gray-100 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold mb-6 text-center md:text-left">Compartilhe Suas Fotos</h3>
+                
+                <div class="photo-upload mb-6" id="photo-upload-area">
+                    <i class="fas fa-camera text-4xl text-gray-400 mb-3"></i>
+                    <p class="text-gray-600">Arraste e solte suas fotos aqui ou clique para selecionar</p>
+                    <input type="file" id="photo-upload-input" class="hidden" accept="image/*" multiple>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="member-photos">
+                    <!-- Photos would be loaded here dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motorcycle Market Section -->
+    <section id="market" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">MOTOS DOS <span class="text-red-600">ASSOCIADOS</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Bike 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg bike-card">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Harley Davidson" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">VENDENDO</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-xl mb-2">Harley Davidson Street Glide 2020</h3>
+                        <p class="text-gray-700 text-sm mb-3">12.000 km | Completa | Preto</p>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-red-600 font-bold text-xl">R$ 58.900</span>
+                            <span class="text-xs text-gray-500">Brasília - DF</span>
+                        </div>
+                        <button class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Entrar em Contato</button>
+                    </div>
+                </div>
+                
+                <!-- Bike 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg bike-card">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1580310614657-6baf49c6daf6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Honda CB 1000" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">VENDENDO</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-xl mb-2">Honda CB 1000R 2021</h3>
+                        <p class="text-gray-700 text-sm mb-3">8.500 km | Completa | Vermelha</p>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-red-600 font-bold text-xl">R$ 42.500</span>
+                            <span class="text-xs text-gray-500">Águas Claras - DF</span>
+                        </div>
+                        <button class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Entrar em Contato</button>
+                    </div>
+                </div>
+                
+                <!-- Bike 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg bike-card">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1568772585407-936be5ef86c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="BMW R 1250 GS" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">VENDENDO</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-xl mb-2">BMW R 1250 GS Adventure 2022</h3>
+                        <p class="text-gray-700 text-sm mb-3">5.200 km | Completa | Azul</p>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-red-600 font-bold text-xl">R$ 89.900</span>
+                            <span class="text-xs text-gray-500">Taguatinga - DF</span>
+                        </div>
+                        <button class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Entrar em Contato</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="#" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Ver Todas as Motos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section -->
+    <section id="join" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">JUNTE-SE AO <span class="text-red-600">CLUBE</span></h2>
+            
+            <div class="max-w-4xl mx-auto bg-gray-100 rounded-lg p-8">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Benefits -->
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-4">Benefícios de ser membro:</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Descontos em eventos e passeios organizados</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Acesso a grupo exclusivo no WhatsApp</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Descontos em oficinas e lojas parceiras</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Participação em sorteios mensais</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Espaço para anunciar sua moto sem custo</span>
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-8">
+                            <h3 class="text-xl font-semibold mb-4">Nossos membros:</h3>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="member-card text-center">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Membro" class="w-16 h-16 rounded-full mx-auto mb-2">
+                                    <p class="text-sm font-medium">Carlos</p>
+                                </div>
+                                <div class="member-card text-center">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Membro" class="w-16 h-16 rounded-full mx-auto mb-2">
+                                    <p class="text-sm font-medium">Ana</p>
+                                </div>
+                                <div class="member-card text-center">
+                                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Membro" class="w-16 h-16 rounded-full mx-auto mb-2">
+                                    <p class="text-sm font-medium">Roberto</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Registration Form -->
+                    <div class="lg:w-1/2">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold mb-4">Cadastre-se</h3>
+                            
+                            <div class="mb-4">
+                                <button class="google-btn w-full">
+                                    <div class="google-icon">
+                                        <i class="fab fa-google"></i>
+                                    </div>
+                                    Cadastre-se com o Google
+                                </button>
+                            </div>
+                            
+                            <div class="flex items-center my-4">
+                                <div class="flex-grow border-t border-gray-300"></div>
+                                <span class="mx-4 text-gray-500">ou</span>
+                                <div class="flex-grow border-t border-gray-300"></div>
+                            </div>
+                            
+                            <form id="registration-form">
+                                <div class="mb-4">
+                                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nome Completo</label>
+                                    <input type="text" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">E-mail</label>
+                                    <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Telefone</label>
+                                    <input type="tel" id="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="bike" class="block text-gray-700 text-sm font-bold mb-2">Modelo da Moto</label>
+                                    <input type="text" id="bike" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="experience" class="block text-gray-700 text-sm font-bold mb-2">Tempo de Experiência</label>
+                                    <select id="experience" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                                        <option value="">Selecione</option>
+                                        <option value="beginner">Menos de 1 ano</option>
+                                        <option value="intermediate">1-3 anos</option>
+                                        <option value="advanced">3-5 anos</option>
+                                        <option value="expert">Mais de 5 anos</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Cadastrar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Login</h3>
+                <button id="close-login" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <button class="google-btn w-full">
+                    <div class="google-icon">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    Entrar com o Google
+                </button>
+            </div>
+            
+            <div class="flex items-center my-4">
+                <div class="flex-grow border-t border-gray-300"></div>
+                <span class="mx-4 text-gray-500">ou</span>
+                <div class="flex-grow border-t border-gray-300"></div>
+            </div>
+            
+            <form id="login-form">
+                <div class="mb-4">
+                    <label for="login-email" class="block text-gray-700 text-sm font-bold mb-2">E-mail</label>
+                    <input type="email" id="login-email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                
+                <div class="mb-6">
+                    <label for="login-password" class="block text-gray-700 text-sm font-bold mb-2">Senha</label>
+                    <input type="password" id="login-password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 mb-4">Entrar</button>
+                
+                <div class="text-center">
+                    <a href="#" class="text-sm text-red-600 hover:underline">Esqueceu a senha?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="https://i.ibb.co/233xJ4wc/image.png" alt="Logo Motos BSB" class="h-10 mr-3">
+                        <h3 class="text-xl font-bold logo-font">MOTOS <span class="text-red-600">BSB</span></h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">O maior clube de motociclistas de Brasília. Desde 2010 unindo apaixonados por duas rodas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/motos_bsb" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Links Rápidos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white">Início</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white">Sobre</a></li>
+                        <li><a href="#events" class="text-gray-400 hover:text-white">Eventos</a></li>
+                        <li><a href="#gallery" class="text-gray-400 hover:text-white">Galeria</a></li>
+                        <li><a href="#market" class="text-gray-400 hover:text-white">Motos à Venda</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contato</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-red-600"></i>
+                            <span class="text-gray-400">Sede do Clube: SHIS QI 13, Brasília - DF</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-2 text-red-600"></i>
+                            <span class="text-gray-400">(61) 99999-9999</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-2 text-red-600"></i>
+                            <span class="text-gray-400">contato@motosbsb.com.br</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 mb-4">Inscreva-se para receber nossas novidades e promoções.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Seu e-mail" class="px-3 py-2 bg-gray-800 text-white rounded-l focus:outline-none focus:ring-1 focus:ring-red-600 w-full">
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-r">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+                <p>&copy; 2023 Motos BSB. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close login modal
+        document.getElementById('close-login').addEventListener('click', function() {
+            document.getElementById('login-modal').classList.add('hidden');
+        });
+
+        // Photo upload functionality
+        const photoUploadArea = document.getElementById('photo-upload-area');
+        const photoUploadInput = document.getElementById('photo-upload-input');
+        const memberPhotos = document.getElementById('member-photos');
+
+        photoUploadArea.addEventListener('click', function() {
+            photoUploadInput.click();
+        });
+
+        photoUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('border-red-600', 'bg-red-50');
+        });
+
+        photoUploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('border-red-600', 'bg-red-50');
+        });
+
+        photoUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('border-red-600', 'bg-red-50');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        photoUploadInput.addEventListener('change', function() {
+            if (this.files.length) {
+                handleFiles(this.files);
+            }
+        });
+
+        function handleFiles(files) {
+            for (let i = 0; i < Math.min(files.length, 8); i++) {
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const photoDiv = document.createElement('div');
+                        photoDiv.className = 'relative';
+                        
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'w-full h-48 object-cover rounded-lg';
+                        img.alt = 'Foto do membro';
+                        
+                        photoDiv.appendChild(img);
+                        memberPhotos.appendChild(photoDiv);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        // Form submission
+        document.getElementById('registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Cadastro enviado com sucesso! Em breve entraremos em contato.');
+            this.reset();
+        });
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Login realizado com sucesso!');
+            document.getElementById('login-modal').classList.add('hidden');
+            this.reset();
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Highlight active nav link on scroll
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY + 100;
+            
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Handle window resize for better mobile experience
+        window.addEventListener('resize', function() {
+            // Close mobile menu if screen size increases
+            if (window.innerWidth >= 768) {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
